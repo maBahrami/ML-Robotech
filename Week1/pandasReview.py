@@ -84,13 +84,46 @@ print(df.values)
 print(df.head(3))
 print(df.tail(3))
 print(df.info())
-'''
 
 print(df.name)
 
 print(df[["city", "name"]])
 
 print(df["grade"] > 10)
+
+
+# ------------------------- iloc method ----------------------------------
+# df.iloc[rows_number, cols_number]
+
+print(df.iloc[0, 0])
+
+print(df.iloc[3:, :2])
+
+print(df.iloc[[0, 1], -3:])
+
+print(df.iloc[[True, True, False, False, False, False, False, False, False, True], [0, 1]])
+
+
+# ------------------------- loc method ----------------------------------
+# df.loc[rows_label, cols_label]
+
+print(df.loc[:, ["city", "gender"]])
+
+print(df.loc[1:3, "grade":"guest"])
+
+print(df.loc[[0, 1], ["gender", "city"]])
+
+
+print(df.loc[[True, True, False, False, False, False, False, False, False, True], "name"])
+
+'''
+
+
+# ------------------------ CSV ------------------------------------------
+
+df = pd.read_csv(r".......", sep = "\t", header=None, names=[........],
+                 skiprows=2, comment="#",
+                 usecols=["....", "....."])
 
 
 
