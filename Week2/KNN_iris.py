@@ -20,7 +20,7 @@ def load_data():
     #print(label.head(5))
 
     # splitinf data to test and train
-    x_train, x_test, y_train, y_test = train_test_split(data, label, test_size=0.2)
+    x_train, x_test, y_train, y_test = train_test_split(data, label, test_size=0.2, random_state=42)
     #print(y_test.shape)
 
     return x_train, x_test, y_train, y_test
