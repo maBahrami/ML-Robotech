@@ -38,8 +38,8 @@ print(f"RMSE: {root_mean_squared_error(y_test, y_pred)}")
 
 
 plt.scatter(x, y)
+plt.plot(x_test, y_pred, "r")
 plt.xlabel("population")
 plt.ylabel("benefit")
 plt.show()
-
 
