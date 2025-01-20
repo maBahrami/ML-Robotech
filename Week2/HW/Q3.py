@@ -16,7 +16,7 @@ y = dataset.iloc[:, 1]
 x.loc[:, 'population'] = (x.loc[:, 'population']).replace(0, np.nan)
 mean = int((x.loc[:, 'population']).mean(skipna=True))
 x.loc[:, 'population'] = (x.loc[:, 'population']).replace(np.nan, mean)
-print(x)
+#print(x)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=123)
 
@@ -32,9 +32,9 @@ y_pred = reg.predict(x_test)
 df = pd.DataFrame({"Actual": y_test, "Predicted": y_pred})
 #print(df)
 
-print(f"MAE: {mean_absolute_error(y_test, y_pred)}")
-print(f"MSE: {mean_squared_error(y_test, y_pred)}")
-print(f"RMSE: {root_mean_squared_error(y_test, y_pred)}")
+print(f"MAE: {round(mean_absolute_error(y_test, y_pred), 2)}")
+print(f"MSE: {round(mean_squared_error(y_test, y_pred), 2)}")
+print(f"RMSE: {round(root_mean_squared_error(y_test, y_pred), 2)}")
 
 
 plt.scatter(x, y)
