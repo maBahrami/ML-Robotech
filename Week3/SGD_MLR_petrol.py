@@ -20,16 +20,20 @@ x_test = sc.transform(x_test)
 regressor = LinearRegression()
 regressor.fit(x_train, y_train)
 
-sgd_regressor = SGDRegressor(max_iter=1000)
+sgd_regressor = SGDRegressor(max_iter=1000, random_state=123, eta0=0.01)
 sgd_regressor.fit(x_train, y_train)
 
 
 coeff_df = pd.DataFrame(regressor.coef_, x.columns, columns=["coefficient"])
 sgd_coeff_df = pd.DataFrame(sgd_regressor.coef_, x.columns, columns=["coefficient"])
-
 #print(coeff_df)
 #print(sgd_coeff_df)
 
+epoch = sgd_regressor.n_iter_
+print(f"epoch: {epoch}")
+
+GD_update = sgd_regressor.t_
+print(f"number of GD updates: {GD_update}")
 
 """
 
