@@ -43,6 +43,7 @@ y_pred = sgdReg.predict(x_test)
 print(f"\nMAE: {metrics.mean_absolute_error(y_test, y_pred)}")
 print(f"MSE: {metrics.mean_squared_error(y_test, y_pred)}")
 print(f"MAPE: {metrics.mean_absolute_percentage_error(y_test, y_pred)}\n")
+# pay attetion to MAPE
 
 df = pd.DataFrame({"Actual": y_test, "Predicted": y_pred})
 print(df)
