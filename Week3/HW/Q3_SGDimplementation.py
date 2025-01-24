@@ -64,40 +64,43 @@ print(f"RMSE: {round(root_mean_squared_error(y_test, y_pred), 2)}")
 print(f"\nepoch: {SGDreg.n_iter_}")
 print(f"SGD update: {SGDreg.t_}")
 
-print(SGDreg.coef_)
-print(SGDreg.intercept_)
+print(f"m: {(SGDreg.coef_)[0]}")
+print(f"b: {(SGDreg.intercept_)[0]}")
 
 
 print("\n\n--------------- DIY SGD Regressor ---------------\n")
 # yHat = mx + b
-alpha = 0.01
-m0 = 0
-b0 = 0
-margin = 0.001
+alpha = 0.001
+m = 0
+b = 0
+
+step = 0
+epoch = 0
 
 
 y_train = y_train.to_numpy()
 x_train = x_train[:, 0]
 
-
-counter = 0
-for _ in range(500):
-    #print(m0 , b0)
-    m = m0
-    b = b0
+for _ in range(50):
     for i in range(0, len(x_train)):
+        #print(m, b)
+
         yHat = m * x_train[i] + b
         yReal = y_train[i]
 
         Dm = -2 * x_train[i] * (yReal - yHat)
         Db = -2 * (yReal - yHat)
 
-        m0 -= alpha * Dm
-        b0 -= alpha * Db
+        m -= alpha * Dm
+        b -= alpha * Db 
 
-        counter += 1
+        step += 1
+    epoch += 1
+    #print("--------------------------------")
 
-print()
-print(m)
-print(b)
+print(f"epoch: {epoch}")
+print(f"SGD update: {step}")
+
+print(f"m: {m}")
+print(f"b: {b}")
 
