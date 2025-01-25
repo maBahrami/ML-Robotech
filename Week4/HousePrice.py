@@ -8,6 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import SGDRegressor
 from sklearn.metrics import mean_absolute_percentage_error
 
+
 def load_house_attributes(inputPath):
     cols = ['bedrooms', 'bathrooms', 'area', 'zipcode', 'price']
     df = pd.read_csv(inputPath, sep=" ", header=None, names=cols)
@@ -18,8 +19,10 @@ def load_house_attributes(inputPath):
         if count < 25:
             idxs = df[df["zipcode"] == zipcode].index
             df.drop(idxs, inplace=True)
+
+    train, test = train_test_split(df, test_size=0.2, random_state=42)
     
-    return df
+    return train, test
 
 
 def preprocess_house_attribute(train, test):
@@ -32,6 +35,10 @@ def preprocess_house_attribute(train, test):
     trainCategorical = encoder.fit_transform(np.array(train["zipcode"]).reshape(-1, 1))
     testCategorical = encoder.fit_transform(np.array(test["zipcode"]).reshape(-1, 1))
 
+    #encoder = LabelBinarizer()
+    #trainCategorical = encoder.fit_transform(train["zipcode"])
+    #testCategorical = encoder.fit_transform(test["zipcode"])
+
     trainX = np.hstack([trainContinuous, trainCategorical])
     testX = np.hstack([testContinuous, testCategorical])
 
@@ -39,24 +46,16 @@ def preprocess_house_attribute(train, test):
     trainY = train["price"] / maxPrice
     testY = test["price"] / maxPrice
 
-
     return trainX, testX, trainY, testY
 
-"""
-    encoder = LabelBinarizer()
-    trainCategorical = encoder.fit_transform(train["zipcode"])
-    testCategorical = encoder.fit_transform(test["zipcode"])
-"""
 
 
-
-df = load_house_attributes(r"Week4\Datasets\HousesInfo.txt")
-
-train, test = train_test_split(df, test_size=0.2, random_state=42)
+train, test = load_house_attributes(r"Week4\Datasets\HousesInfo.txt")
 
 trainX, testX, trainY, testY = preprocess_house_attribute(train, test)
 
 
+# ------------------------------- Linear Regression -------------------------
 model = LinearRegression()
 model.fit(trainX, trainY)
 
@@ -74,8 +73,8 @@ mape = mean_absolute_percentage_error(testY, preds)
 print(mape)
 
 
-
-model2 = SGDRegressor(tol=0.00001)
+# ----------------------------- SGD Regressor ------------------------------
+model2 = SGDRegressor(tol=0.000001, random_state=42)
 model2.fit(trainX, trainY)
 
 preds = model2.predict(testX)
