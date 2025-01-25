@@ -18,9 +18,7 @@ img2 = cv2.imread(r"Week4\Datasets\palette.jpg")
 rgb_img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
 cv2.imshow("RGB image", rgb_img2)
 cv2.waitKey()
-"""
 
-""""
 img2 = cv2.imread(r"Week4\Datasets\palette.jpg")
 gray_img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 cv2.imshow("RGB image", gray_img2)
@@ -35,8 +33,10 @@ cv2.destroyAllWindows()
 
 
 cv2.imwrite("palete_blueChannel.jpg", blue_channel)
-"""
 
+
+
+# __________________________ Video ___________________________________
 
 cap = cv2.VideoCapture(r"C:\Users\mabah\Desktop\ML_wee4\Artemis.mp4")
 
@@ -46,14 +46,19 @@ while True:
     if frame is None: break
 
     cv2.imshow("video", frame)
-    
+
     if cv2.waitKey(30) == ord("q"): break
 
 
+# __________________________ Adding on _______________________________
+
+"""
 
 
+img = cv2.imread(r"Week4\Datasets\Atlas.webp")
 
+cv2.line(img, (10, 40), (167, 234), (0, 255, 0), 3)
+cv2.imshow("my image", img)
 
-
-
-
+cv2.waitKey()
+cv2.destroyAllWindows()
