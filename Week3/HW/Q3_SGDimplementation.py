@@ -5,6 +5,7 @@ from sklearn.linear_model import SGDRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, root_mean_squared_error
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+import math
 
 
 dataset = pd.read_csv(r"Week3\HW\Datasets\Q3_data.csv")
@@ -48,7 +49,7 @@ print(f"RMSE: {round(root_mean_squared_error(y_test, y_pred), 2)}")
 
 
 print("\n\n------------------ SGD Regressor ---------------\n")
-SGDreg = SGDRegressor(max_iter=1000, random_state=123, eta0=0.01, shuffle=False)
+SGDreg = SGDRegressor(max_iter=1000, random_state=123, eta0=0.001, shuffle=False)
 SGDreg.fit(x_train, y_train)
 
 
@@ -81,7 +82,7 @@ epoch = 0
 y_train = y_train.to_numpy()
 x_train = x_train[:, 0]
 
-for _ in range(50):
+for _ in range(40):
     for i in range(0, len(x_train)):
         #print(m, b)
 
@@ -101,6 +102,23 @@ for _ in range(50):
 print(f"epoch: {epoch}")
 print(f"SGD update: {step}")
 
-print(f"m: {m}")
+print(f"\nm: {m}")
 print(f"b: {b}")
 
+
+y_test = y_test.to_numpy()
+x_test = x_test[:, 0]
+
+MAE = 0
+MSE = 0
+RMSE = 0
+for i in range(len(x_test)):
+    yHat = m * x_test[i] + b
+    yReal = y_test[i]
+
+    MAE += (abs(yHat - yReal)) / len(x_test)
+    MSE += ((yHat - yReal)**2) / len(x_test)
+
+print(f"\nMAE: {MAE}")
+print(f"MSE: {MSE}")
+print(f"RMSE: {math.sqrt(MSE)}\n\n")
