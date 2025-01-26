@@ -5,6 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder 
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.linear_model import SGDClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 
 
 cols = ["class", "age", "menopause", "tumor-size", "inv-nodes", "node-caps",
@@ -25,15 +27,27 @@ features = ["menopause", "tumor-size", "inv-nodes", "node-caps",
             "deg-malig", "breast", "breast-quad", "irradiat"]
 
 encOneHot = OneHotEncoder(sparse_output=False)
-trainOneHot = encOneHot.fit_transform(np.array(train["age"]).reshape(-1, 1))
+trainX = encOneHot.fit_transform(np.array(train["age"]).reshape(-1, 1))
 #print(encOneHot.get_feature_names_out(["age"]))
 #print(trainOneHot.shape)
-testOneHot = encOneHot.transform(np.array(test["age"]).reshape(-1, 1))
+testX = encOneHot.transform(np.array(test["age"]).reshape(-1, 1))
 
 for i in features:
-    trainOneHot = np.hstack([trainOneHot, encOneHot.fit_transform(np.array(train[i]).reshape(-1, 1))])
+    trainX = np.hstack([trainX, encOneHot.fit_transform(np.array(train[i]).reshape(-1, 1))])
     #print(i, trainOneHot.shape)
     #print(encOneHot.get_feature_names_out([i]))
-    testOneHot = np.hstack([testOneHot, encOneHot.transform(np.array(test[i]).reshape(-1, 1))])
+    testX = np.hstack([testX, encOneHot.transform(np.array(test[i]).reshape(-1, 1))])
 
-#print(trainOneHot.shape)
+
+trainY = train["class"]
+testY = test["class"]
+
+
+# ------------------------ Logistic Regression ------------------
+clf = LogisticRegression()
+clf.fit(trainX, trainY)
+
+y_pred = clf.predict(testX)
+
+acc = accuracy_score(y_pred, testY)
+print(acc)
