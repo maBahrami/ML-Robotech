@@ -42,6 +42,9 @@ y_pred = reg.predict(x_test)
 df = pd.DataFrame({"Actual": y_test, "Predicted": y_pred})
 #print(df)
 
+print(f"m: {(reg.coef_)[0]}")
+print(f"b: {(reg.intercept_)}\n")
+
 print(f"MAE: {round(mean_absolute_error(y_test, y_pred), 2)}")
 print(f"MSE: {round(mean_squared_error(y_test, y_pred), 2)}")
 print(f"RMSE: {round(root_mean_squared_error(y_test, y_pred), 2)}")
@@ -57,17 +60,15 @@ y_pred = SGDreg.predict(x_test)
 df = pd.DataFrame({"Actual": y_test, "Predicted": y_pred})
 #print(df)
 
+print(f"\nepoch: {SGDreg.n_iter_}")
+print(f"SGD update: {SGDreg.t_}\n")
+
+print(f"m: {(SGDreg.coef_)[0]}")
+print(f"b: {(SGDreg.intercept_)[0]}\n")
+
 print(f"MAE: {round(mean_absolute_error(y_test, y_pred), 2)}")
 print(f"MSE: {round(mean_squared_error(y_test, y_pred), 2)}")
 print(f"RMSE: {round(root_mean_squared_error(y_test, y_pred), 2)}")
-
-
-print(f"\nepoch: {SGDreg.n_iter_}")
-print(f"SGD update: {SGDreg.t_}")
-
-print(f"m: {(SGDreg.coef_)[0]}")
-print(f"b: {(SGDreg.intercept_)[0]}")
-
 
 print("\n\n--------------- DIY SGD Regressor ---------------\n")
 # yHat = mx + b
