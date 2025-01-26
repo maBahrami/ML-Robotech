@@ -23,21 +23,50 @@ df = df.loc[(df.iloc[:, 8])!="?"]
 train, test = train_test_split(df, test_size=0.2, random_state=123)
 
 
-features = ["menopause", "tumor-size", "inv-nodes", "node-caps",
-            "deg-malig", "breast", "breast-quad", "irradiat"]
+def allOneHot(train, test):
+    features = ["menopause", "tumor-size", "inv-nodes", "node-caps",
+                "deg-malig", "breast", "breast-quad", "irradiat"]
 
-encOneHot = OneHotEncoder(sparse_output=False)
-trainX = encOneHot.fit_transform(np.array(train["age"]).reshape(-1, 1))
-#print(encOneHot.get_feature_names_out(["age"]))
-#print(trainOneHot.shape)
-testX = encOneHot.transform(np.array(test["age"]).reshape(-1, 1))
+    encOneHot = OneHotEncoder(sparse_output=False)
+    trainX = encOneHot.fit_transform(np.array(train["age"]).reshape(-1, 1))
+    #print(encOneHot.get_feature_names_out(["age"]))
+    #print(trainOneHot.shape)
+    testX = encOneHot.transform(np.array(test["age"]).reshape(-1, 1))
 
-for i in features:
-    trainX = np.hstack([trainX, encOneHot.fit_transform(np.array(train[i]).reshape(-1, 1))])
-    #print(i, trainOneHot.shape)
-    #print(encOneHot.get_feature_names_out([i]))
-    testX = np.hstack([testX, encOneHot.transform(np.array(test[i]).reshape(-1, 1))])
+    for i in features:
+        trainX = np.hstack([trainX, encOneHot.fit_transform(np.array(train[i]).reshape(-1, 1))])
+        #print(i, trainOneHot.shape)
+        #print(encOneHot.get_feature_names_out([i]))
+        testX = np.hstack([testX, encOneHot.transform(np.array(test[i]).reshape(-1, 1))])
 
+    return trainX, testX
+
+def allOrdinal(train, test):
+    features = ["menopause", "tumor-size", "inv-nodes", "node-caps",
+                "deg-malig", "breast", "breast-quad", "irradiat"]
+
+    encOneHot = OrdinalEncoder()
+    trainX = encOneHot.fit_transform(np.array(train["age"]).reshape(-1, 1))
+    #print(encOneHot.get_feature_names_out(["age"]))
+    #print(trainOneHot.shape)
+    testX = encOneHot.transform(np.array(test["age"]).reshape(-1, 1))
+
+    for i in features:
+        trainX = np.hstack([trainX, encOneHot.fit_transform(np.array(train[i]).reshape(-1, 1))])
+        #print(i, trainOneHot.shape)
+        #print(encOneHot.get_feature_names_out([i]))
+        testX = np.hstack([testX, encOneHot.transform(np.array(test[i]).reshape(-1, 1))])
+
+    return trainX, testX
+
+
+
+
+
+# ----------------------------------------------------------------
+trainX, testX = allOrdinal(train, test)
+
+#trainX, testX = allOneHot(train, test)
 
 trainY = train["class"]
 testY = test["class"]
