@@ -4,6 +4,7 @@ import glob
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from joblib import dump
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
 def load_data():
 
@@ -41,10 +42,20 @@ clf = KNeighborsClassifier()
 
 clf.fit(x_train, y_train)
 
-dump(clf, "fire_detector.z")
+y_pred = clf.predict(x_test)
 
-acc = clf.score(x_test, y_test) * 100
-print(f"acc: {acc}")
+#dump(clf, "fire_detector.z")
+
+accuracy = accuracy_score(y_test, y_pred) * 100
+precision = precision_score(y_test, y_pred, pos_label="fire") * 100
+recall = recall_score(y_test, y_pred, pos_label="fire") * 100
+f_score = f1_score(y_test, y_pred, pos_label="fire") * 100
+
+print(f"accuracy: {accuracy}")
+print(f"precision: {precision}")
+print(f"recall: {recall}")
+print(f"f_score: {f_score}")
+
 
 
 
