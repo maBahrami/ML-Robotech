@@ -2,6 +2,8 @@ import cv2
 from sklearn.model_selection import train_test_split
 import glob
 import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+from joblib import dump
 
 def load_data():
 
@@ -32,7 +34,18 @@ def load_data():
     
     return x_train, x_test, y_train, y_test
 
-load_data()
+x_train, x_test, y_train, y_test = load_data()
+
+
+clf = KNeighborsClassifier()
+
+clf.fit(x_train, y_train)
+
+dump(clf, "fire_detector.z")
+
+acc = clf.score(x_test, y_test) * 100
+print(f"acc: {acc}")
+
 
 
 
