@@ -3,7 +3,7 @@ import glob
 from joblib import load
 import numpy as np
 
-clf = load(r"Week5\fire_detector.z")
+clf = load(r"Week5\fireDetector_model.z")
 
 for item in glob.glob(r"Week5\reference\Datasets\fire_test\*"):
     img = cv2.imread(item)

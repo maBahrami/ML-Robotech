@@ -44,7 +44,7 @@ clf.fit(x_train, y_train)
 
 y_pred = clf.predict(x_test)
 
-#dump(clf, "fire_detector.z")
+#dump(clf, "fireDetector_model.z")
 
 accuracy = accuracy_score(y_test, y_pred) * 100
 precision = precision_score(y_test, y_pred, pos_label="fire") * 100
