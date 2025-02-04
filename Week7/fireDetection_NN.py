@@ -5,6 +5,12 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras import models, layers
+import matplotlib.pyplot as plt
+from tensorflow.keras import models
+
+EPOCHS = 23
+batchSize = 32
+
 
 
 def load_data():
@@ -20,7 +26,7 @@ def load_data():
         #print(img.shape)
         img = cv2.resize(img, (32, 32))
         img = img / 255.0
-        img = img.flatten()
+        #img = img.flatten()
         #print(img.shape)
         data_list.append(img)
 
@@ -44,20 +50,50 @@ def load_data():
 
     return x_train, x_test, y_train, y_test
 
+
+def neural_network():
+    net = models.Sequential([
+                                layers.Flatten(input_shape=(32, 32, 3)),
+                                layers.Dense(20, activation="relu"),
+                                layers.Dense(8, activation="relu"),
+                                layers.Dense(2, activation="softmax")
+                            ])
+
+    net.summary()
+
+    net.compile(optimizer="SGD",
+                loss="categorical_crossentropy",
+                metrics=["accuracy"])
+
+    H = net.fit(x_train, y_train, batch_size=batchSize, epochs=EPOCHS, validation_data=(x_test, y_test))
+
+    loss, acc = net.evaluate(x_test, y_test)
+    print(f"loss: {loss}, accuaracy{acc}")
+
+    net.save("fire_detection_NeuralNetwork.h5")
+
+    # net = models.load_model("fire_detection_NeuralNetwork.h5")
+
+    return H
+
+def show_result():
+
+    print(H.history.keys())
+
+    plt.style.use("ggplot")
+    plt.plot(np.arange(EPOCHS), H.history["loss"], label="train loss")
+    plt.plot(np.arange(EPOCHS), H.history["val_loss"], label="test loss")
+    plt.plot(np.arange(EPOCHS), H.history["accuracy"], label="train accuracy")
+    plt.plot(np.arange(EPOCHS), H.history["val_accuracy"], label="test accuracy")
+    plt.legend()
+    plt.xlabel("epochs")
+    plt.ylabel("loss")
+    plt.title("training on fire dataset")
+    plt.show()
+
+
 x_train, x_test, y_train, y_test = load_data()
 
+H = neural_network()
 
-net = models.Sequential([
-                            layers.Dense(20, activation="relu"),
-                            layers.Dense(8, activation="relu"),
-                            layers.Dense(2, activation="softmax")
-                         ])
-
-net.compile(optimizer="SGD",
-            loss="categorical_crossentropy",
-            metrics=["accuracy"])
-
-H = net.fit(x_train, y_train, batch_size=32, epochs=23, validation_data=(x_test, y_test))
-
-
-
+show_result()
