@@ -4,9 +4,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
-from tensorflow.keras.utils import to_categorical
 from tensorflow.keras import models, layers
-import matplotlib.pyplot as plt
 from tensorflow.keras import models
 
 EPOCHS = 100
@@ -79,8 +77,6 @@ def neural_network():
     return net
 
 
-
-
 train, test = load_house_attributes(r"Week4\Datasets\HousesInfo.txt")
 
 x_train, x_test, y_train, y_test = preprocess_house_attribute(train, test)
@@ -88,8 +84,8 @@ x_train, x_test, y_train, y_test = preprocess_house_attribute(train, test)
 model = neural_network()
 
 
-
 preds = model.predict(x_test)
+
 diff = preds.flatten() - y_test
 percentDiff = np.abs((diff/y_test)*100)
 mean = np.mean(percentDiff)
