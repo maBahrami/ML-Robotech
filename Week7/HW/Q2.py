@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras import layers, models 
 from sklearn import metrics
 import matplotlib.pyplot as plt
@@ -19,9 +20,14 @@ y = y / maxPrice
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=123)
 
-sc = StandardScaler()
+#sc = StandardScaler()
+#x_train = sc.fit_transform(x_train)
+#x_test = sc.transform(x_test)
+
+sc = MinMaxScaler(feature_range=(0, 1))
 x_train = sc.fit_transform(x_train)
 x_test = sc.transform(x_test)
+
 
 
 # ------------------------------ Neural Network ------------------------------
@@ -63,7 +69,12 @@ plt.legend()
 plt.show()
 
 
-print("\n\n--------------------- Linear Regression -------------------")
+
+sc = StandardScaler()
+x_train = sc.fit_transform(x_train)
+x_test = sc.transform(x_test)
+
+print("\n--------------------- Linear Regression -------------------")
 regressor = LinearRegression()
 regressor.fit(x_train, y_train)
 
@@ -78,7 +89,7 @@ print(f"MAPE: {metrics.mean_absolute_percentage_error(y_test, y_pred)}\n")
 #print(df)
 
 
-print("\n\n--------------------- SGD Regressor -------------------")
+print("\n--------------------- SGD Regressor -------------------")
 sgdReg = SGDRegressor(random_state=123, eta0=0.01)
 sgdReg.fit(x_train, y_train)
 
